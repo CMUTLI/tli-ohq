@@ -5,9 +5,9 @@ module.exports = {
   development: {
     client: 'postgresql',
     connection: {
-      host:     'localhost',
+      host:     'oh-queue-test.cp8o9vh5dfoa.us-east-1.rds.amazonaws.com',
       port:     '5432',
-      database: 'queue',
+      database: process.env.DB_NAME, 
       user:     'queue',
       password: 'supersecret'
     },
@@ -26,9 +26,9 @@ module.exports = {
   production: {
     client: 'postgresql',
     connection: {
-      host:     '112_queue_postgres',
+      host:     'oh-queue-prod.cp8o9vh5dfoa.us-east-1.rds.amazonaws.com',
       port:     '5432',
-      database: 'queue',
+      database: process.env.DB_NAME,
       user:     'queue',
       password: 'supersecret'
     },
