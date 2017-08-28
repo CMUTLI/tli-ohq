@@ -21,10 +21,6 @@ config.GOOGLE_SHEETS = {
 // Superusers who can access super-secret stuff
 config.ADMIN_USERS = [
   'edryer',
-  'kevinzhe',
-  'kkleiven',
-  'koz',
-  'rnvarma',
   'tstentz',
 ];
 
