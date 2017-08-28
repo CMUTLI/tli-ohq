@@ -150,7 +150,7 @@ router.post('/createlocal', validate({body: UserSchema}), function(req, res, nex
     })
     .then(function(role) {
       if (typeof role === 'undefined') {
-        throw { name: 'UserCreationException', message: 'Your Andrew ID is not marked as in 15-112.' };
+        throw { name: 'UserCreationException', message: 'Your Andrew ID is not marked as in this course.' };
       } else {
 
   // async hash password, then join with role

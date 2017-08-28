@@ -197,7 +197,7 @@ var student_ctl = ["$scope","$rootScope","$db","localStorageService",function($s
         newQ[0].state === 'answering' &&
         lss.get(ls_key)) {
       var ta_name = newQ[0].ca_first_name + ' ' + newQ[0].ca_last_name;
-      curNotification = new Notify('15-112 Office Hours', {
+      curNotification = new Notify('CMU Office Hours', {
         icon: '/images/site-icons/notification-512.png',
         body: 'TA ' + ta_name + ' is on the way',
         closeOnClick: true,
