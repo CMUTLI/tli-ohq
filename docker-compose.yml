@@ -1,0 +1,11 @@
+110nodeapp:
+    build: . 
+    container_name: 110_queue_nodeapp
+    restart: always
+    labels:
+        - "110_queue"
+    ports: 
+        - "127.0.0.1:15110:3000"
+    environment:
+        - NODE_ENV=production
+        - DB_NAME=oneten_queue

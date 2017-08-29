@@ -15,6 +15,9 @@ RUN chown -R app:app .
 RUN apk add --no-cache g++ make python &&\
     su -s /bin/sh -c "cd /home/app/queue && npm install" - app &&\
     apk del g++ make python
+RUN apk add --no-cache g++ make python &&\
+    su -s /bin/sh -c "cd /home/app/queue && npm rebuild bcrypt --build-from-source" - app &&\
+    apk del g++ make python
 
 # Copy over our app
 COPY . .
