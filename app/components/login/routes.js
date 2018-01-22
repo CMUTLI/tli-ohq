@@ -9,6 +9,10 @@ router.get('/success',auth.passport.authenticate('google', { failureRedirect: '/
   res.redirect('/#/courses');
 });
 
+router.post('/localauth',auth.passport.authenticate('local'),function(req, res) {
+	res.redirect('/#/courses');
+});
+
 router.get('/endauth', function(req, res, next) {
   req.logout();
   res.redirect('/');

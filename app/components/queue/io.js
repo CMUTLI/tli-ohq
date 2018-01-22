@@ -11,15 +11,17 @@ var Promise = require('bluebird');
 //
 
 module.exports.queue = function(io) {
+  console.log("entered queue name space")
 
   // make sure that this endpoint is protected
-  io.use(auth.ioIsAuthenticated);
-
+  // io.use(auth.ioIsAuthenticated) ;
+  console.log("authenticated")
   // on client connection, join appropriate room, and
   // handle subsequent client -> server communications
   // students join room student_USERID
   // cas join room cas_USERID
   io.on('connection', function(socket) {
+    console.log('connected')
     var userid = socket.request.user.id;
     socket.on('join_course', function(course_id) {
       if (socket.request.user.roles[course_id] === 'ca') {

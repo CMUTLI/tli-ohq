@@ -6,6 +6,7 @@ var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 var db = require('./db');
 var config = require('./config');
+var LocalStrategy = require('passport-local').Strategy;
 var cleanUser = require('./components/user/user').cleanUser;
 
 
@@ -13,6 +14,42 @@ passport.serializeUser(function(user, done) {
   done(null, user.id);
 });
 
+function make_user(andrew_id) {
+  var result = {};
+  result.andrew_id = andrew_id;
+  result.last_name = andrew_id;
+  result.first_name = andrew_id;
+  result.email = andrew_id;
+  //TODO: remove this when roles are really gone
+  result.role = "student";
+  result.google_id = andrew_id;
+  return result;
+}
+
+passport.use(new LocalStrategy(
+  function(andrew_id, password, done) {
+    console.log(andrew_id, password);
+    db.select().from('users')
+      .where('andrew_id', andrew_id)
+      .first()
+      .then(function(user) {
+        if (typeof user === 'undefined') {
+          db.insert(make_user(andrew_id))
+                     .into('users')
+                     .returning('*')
+                     .then(function (result) {
+                        console.log(result);
+                        done(null, result[0])
+                      });
+        } else {
+          done(null, user);
+        }
+      })
+      .catch(function(err) {
+        done(err);
+      });
+  })
+);
 
 passport.deserializeUser(function(id, done) {
   if (typeof id === 'undefined') {

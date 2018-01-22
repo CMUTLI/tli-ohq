@@ -41,7 +41,7 @@
                 <div class="row row-tight">
                   <div class="input-field col s12 m6">
                     <select ng-model="new_selected.location" material-select watch>
-                      <option name="location_option" value="{{ l.id }}" ng-repeat="l in $db.model.locations | orderBy: 'location'">{{ l.location }}</option>
+                      <option id="{{ l.location }}" name="location_option" value="{{ l.id }}" ng-repeat="l in $db.model.locations | orderBy: 'location'">{{ l.location }}</option>
                     </select>
                     <label>Your location</label>
                   </div>

@@ -6,6 +6,20 @@ var login_ctl = ["$scope","$rootScope","$db","$http", function($scope,$rootScope
 	//Forward them to their page if they're already logged in 
 	$rootScope.check_login();
 
+	$scope.test_login = function () {
+		var payload = {
+			username: $("#test_username").val(),
+			password: "hi"
+		}
+		$http.post("/api/login/localauth",payload).then(function (successData) {
+			$rootScope.check_login();
+			window.location = "/#/courses";
+		}, function (failData) {
+			console.log(failData)
+			Materialize.toast("Login Failed.",3000)
+		});
+	}
+
 	$scope.login_submit = function () {
 		var username = $("#username").val();
 		var pass = $("#password").val();
