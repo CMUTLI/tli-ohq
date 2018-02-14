@@ -58,8 +58,6 @@ var landing_ctl = ["$scope","$rootScope","$db","$http","localStorageService",fun
 		$http.get("/api/course/get_active").then(function(success) {
 			$scope.courses = success.data;
 			$scope.sort_courses($scope.courses);
-	    }, function(fail) {
-			Materialize.toast('There was an error', 5000);
 	    });
 	}
 	$scope.get_courses();
