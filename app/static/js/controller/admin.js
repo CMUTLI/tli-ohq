@@ -52,14 +52,12 @@ var admin_ctl = ["$scope","$rootScope","$db","$http",function($scope,$rootScope,
 	}
 
 	$scope.submit_roles = function(people) {
-			console.log("in submit roles");
 			people = people.filter((person) => person != "");
 			var payload = {
 				"andrew_ids": people,
 				"course_id": parseInt(sessionStorage.getItem('current_course')),
 				"role": "ca"
 			}
-			console.log(payload)
 			$http.post("/api/role/set", payload).then(function(success) {
 				$scope.get_tas();
 				Materialize.toast('TAs Added', 5000);
@@ -69,13 +67,11 @@ var admin_ctl = ["$scope","$rootScope","$db","$http",function($scope,$rootScope,
 	}
 
 	$scope.batch_role = function () {
-		console.log("pressed");
 		var input, file, fr, result;
 		input = document.getElementById('csv_input');
 		file = input.files[0]
 		fr = new FileReader();
 		fr.onload = function(e) {
-			console.log("read file");
 			$scope.submit_roles(e.target.result.split("\n"));
 		}
 		fr.readAsText(file);
@@ -86,7 +82,6 @@ var admin_ctl = ["$scope","$rootScope","$db","$http",function($scope,$rootScope,
 							{params: {course_id: parseInt(sessionStorage.getItem('current_course'))}})
 			.then(function(success) {
 				$scope.tas = success.data;
-				console.log($scope.tas);
 	    },
 			function(fail) {
 				Materialize.toast('There was an error', 5000);
@@ -118,4 +113,67 @@ var admin_ctl = ["$scope","$rootScope","$db","$http",function($scope,$rootScope,
 	      Materialize.toast('There was an error', 5000);
 	    });
 	}
+
+	// Stats
+
+	$scope.find_bucket_size = function (L) {
+		var max_found = 0;
+		for(var row = 0; row < L.length; row++) {
+			for(var col = 0; col < L[0].length; col++) {
+				if(L[row][col] > max_found) max_found = L[row][col];
+			}
+		}
+		return (max_found / 4) >> 0; // make bucket size an int in the worst way possible
+	}
+
+	$scope.colorize = function(raw) {
+		// adds color to each element based on #
+		// requires rectangular 2d list of ints
+
+		// TODO: Variable bucket sizes?
+		var res = [];
+		for(var row = 0; row < raw.length; row++) {
+			var temp = [];
+			for(var col = 0; col < raw[0].length; col++) {
+				if(raw[row][col] < $scope.bucket_size) temp.push("#FFFFFF");
+				else if(raw[row][col] < 2 * $scope.bucket_size) temp.push("#F8AAAA");
+				else if(raw[row][col] < 3 * $scope.bucket_size) temp.push("#F15555");
+				else temp.push("#EB0000");
+			}
+			res.push(temp)
+		}
+		return res;
+	} 
+
+
+	$scope.get_weekly_heatmap = function() {
+		// TODO: Replace with api call
+		var raw = [[0, 5, 1, 3, 4, 5, 0], 
+				  [3, 4, 0, 3, 3, 5, 5], 
+				  [1, 5, 1, 0, 3, 2, 4], 
+				  [2, 1, 2, 1, 0, 0, 1], 
+				  [0, 2, 5, 5, 2, 4, 0], 
+				  [1, 4, 3, 4, 3, 0, 1], 
+				  [2, 0, 1, 4, 1, 0, 1], 
+				  [5, 0, 2, 4, 5, 3, 0], 
+				  [5, 1, 2, 3, 5, 1, 0], 
+				  [2, 2, 0, 2, 1, 2, 2], 
+				  [3, 1, 3, 0, 2, 4, 0], 
+				  [5, 0, 0, 2, 5, 5, 3], 
+				  [3, 4, 3, 5, 3, 4, 2], 
+				  [3, 4, 0, 1, 5, 0, 1], 
+				  [0, 4, 4, 5, 1, 0, 5], 
+				  [0, 0, 0, 1, 1, 4, 5], 
+				  [2, 0, 3, 2, 3, 1, 0], 
+				  [0, 3, 3, 2, 0, 3, 3], 
+				  [3, 3, 3, 4, 0, 2, 0], 
+				  [5, 2, 3, 0, 4, 4, 4], 
+				  [3, 5, 3, 5, 1, 1, 0], 
+				  [0, 3, 5, 1, 1, 2, 2], 
+				  [4, 5, 1, 3, 1, 2, 1], 
+				  [0, 1, 2, 0, 5, 5, 0]];
+		$scope.bucket_size = $scope.find_bucket_size(raw);
+		$scope.heatmap = $scope.colorize(raw);
+	}
+	$scope.get_weekly_heatmap();
 }];

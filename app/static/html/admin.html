@@ -5,9 +5,7 @@
 	<div class="container">
    	<br />
 
-   	<div class="row">
-
-
+  <div class="row">
 	<ul class="collapsible popout" data-collapsible="accordion">
 		<li id="update_minute_rule_li">
 			<div class="collapsible-header"><b>Minute Rule</b></div>
@@ -88,8 +86,34 @@
 		  </p>
 		</li>
 	</ul>
+  </div>
 
-   	</div>
+  <!-- Course-wide stats -->
+  <div class="row">
+  <ul class="collapsible popout" data-collapsible="accordion">
+    <li id="update_minute_rule_li">
+      <div class="collapsible-header"><b>Question Count Heatmap</b></div>
+      <div class="collapsible-body">
+        <table>
+          <tr>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thur</th>
+            <th>Fri</th>
+            <th>Sat</th>
+            <th>Sun</th>
+          </tr>
+          <tr ng-repeat="hour in heatmap track by $index">
+            <td ng-repeat="day in hour track by $index" ng-style="{'background-color': hour[$index]}">
+              {{ day }}
+            </td>
+          </tr>
+      </div>
+    </li>
+  </ul>
+  </div>
+
 
 	</div>
 
