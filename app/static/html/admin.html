@@ -27,7 +27,7 @@
 			<div class="collapsible-body">
 				<ul class="collection">
 					<li class="{{ t.enabled ? '' : 'grey lighten-4 grey-text' }} collection-item" ng-repeat="t in $db.model.topics | orderBy : 'topic'">
-	            <span ng-if="t.enabled" class=" new badge red darken-2 waves-effect clickable"  data-badge-caption="Disable" ng-click="select(t.topic, 'Topic', t.id)" ng-href="#modaldelete" modal ></span>
+	            <span ng-if="t.enabled" class=" new badge red darken-2 waves-effect clickable"  data-badge-caption="Disable" ng-click="select(t.topic, 'Topic', t.id)" ng-href=" te" modal ></span>
 	            <span ng-if="!(t.enabled)" class="new badge blue waves-effect clickable"  data-badge-caption="Enable"  ng-click="select(t.topic, 'Topic', t.id); enable_topic_or_loc()"></span>
 	           {{ t.topic}}
 	        </li>
@@ -88,7 +88,7 @@
 	</ul>
   </div>
 
-  <!-- Course-wide stats -->
+  <!-- Course-specific stats -->
   <div class="row">
   <ul class="collapsible popout" data-collapsible="accordion">
     <li id="update_minute_rule_li">
@@ -106,7 +106,6 @@
           </tr>
           <tr ng-repeat="hour in heatmap track by $index">
             <td ng-repeat="day in hour track by $index" ng-style="{'background-color': hour[$index]}">
-              {{ day }}
             </td>
           </tr>
       </div>
