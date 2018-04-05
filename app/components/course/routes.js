@@ -195,4 +195,39 @@ router.post("/edit",
     });
 });
 
+
+
+router.get('/time_data', auth.hasCourseRole('ca').errorJson, function (req, res, next) {
+  var current_course = req.query.course_id;
+
+  function getQuestionCount(time) {
+    var day = time[0]
+    var hour = time[1]
+
+    return db.select('*')
+      .from('questions AS q')
+      .where('course_id', current_course)
+      .where(db.raw('extract(dow from on_time)'), day)
+      .where(db.raw('extract(hour from on_time)'), '<=', hour)
+      .where(db.raw('extract(hour from off_time)'), '>=', hour)
+      .where(db.raw('q.off_reason = \'normal\''))
+      .then(function (out) {
+        return out.length;
+      })
+  }
+
+  var times_arr = [];
+
+  for (var hour = 0; hour < 24; hour ++) {
+    times_arr.push([]);
+    for (var day = 0; day < 7; day ++) {
+      times_arr[hour].push([day, hour]);
+    }
+  }
+
+  return Promise.all(times_arr.map((r) => Promise.all
+    (r.map(getQuestionCount)))
+  )
+});
+
 module.exports = router;
