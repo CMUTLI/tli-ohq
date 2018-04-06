@@ -115,15 +115,22 @@ var admin_ctl = ["$scope","$rootScope","$db","$http",function($scope,$rootScope,
 	}
 
 	// Stats
+	$scope.get_hours = function () {
+		var res = [];
+		for(var i=1; i<25; i++) res.push(i);
+		return res;
+	}
+	$scope.hours = $scope.get_hours();
 
 	$scope.find_bucket_size = function (L) {
+		// finds highest count, makes buckets from quarters of that count
 		var max_found = 0;
 		for(var row = 0; row < L.length; row++) {
 			for(var col = 0; col < L[0].length; col++) {
 				if(L[row][col] > max_found) max_found = L[row][col];
 			}
 		}
-		//TODO: Think about notice for low counts
+
 		if(max_found < 5) {
 			Materialize.toast('Note: low user counts!', 5000);
 		}
@@ -149,6 +156,7 @@ var admin_ctl = ["$scope","$rootScope","$db","$http",function($scope,$rootScope,
 	} 
 
 	$scope.add_times = function(L) {
+		// adds integer timestamps to each row
 		for(var row = 0; row < L.length; row++) {
 			L[row].unshift(row+1);
 		}
@@ -162,12 +170,12 @@ var admin_ctl = ["$scope","$rootScope","$db","$http",function($scope,$rootScope,
 		$http.get("/api/course/time_data", payload).then(function(success) {
 			$scope.bucket_size = $scope.find_bucket_size(success.data);
 			$scope.heatmap = $scope.colorize(success.data);
-			$scope.add_times($scope.heatmap);
+			// $scope.add_times($scope.heatmap);
 
 	    }, function(fail) {
 	      	Materialize.toast('Unable to get counts', 5000);
 	    });
 	}
 	$scope.get_weekly_heatmap();
-	$scope.isNumber = angular.isNumber;
+	$scope.isNumber = angular.isNumber; // for timestamp check
 }];

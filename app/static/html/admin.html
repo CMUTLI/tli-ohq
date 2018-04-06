@@ -93,10 +93,15 @@
   <ul class="collapsible popout" data-collapsible="accordion">
     <li id="update_minute_rule_li">
       <div class="collapsible-header"><b>Question Count Heatmap</b></div>
-      <div class="collapsible-body">
-        <table>
+      <div class="collapsible-body" style="padding: 15px;">
+        <table class="col s2" style="display: inline-block; float: none;">
+          <tr><th>Time</th></tr>
+          <tr ng-repeat="hour in hours">
+            <td style="padding-top: 4px; padding-bottom: 4px;">{{ hour }}:00</td>
+          </tr>
+        </table>
+        <table class="col s10" style="float: right;">
           <tr>
-            <th style="text-align: center;" width="12.5%">Time</th>
             <th style="text-align: center;" width="12.5%">Sun</th>
             <th style="text-align: center;" width="12.5%">Mon</th>
             <th style="text-align: center;" width="12.5%">Tue</th>
@@ -107,10 +112,11 @@
             
           </tr>
           <tr ng-repeat="hour in heatmap track by $index">
-            <td ng-repeat="day in hour track by $index" ng-style="{'background-color': hour[$index]}" style="text-align: center;">
-              <div ng-if="isNumber(hour[$index])">{{ hour[$index] }}:00</div>
+            <!-- If you are reading this, please don't look at how this table is styled it's not worth the pain -->
+            <td ng-repeat="day in hour track by $index" ng-style="{'background-color': hour[$index]}" style="padding-top: 4px; padding-bottom: 4px;"> &zwnj;
             </td>
           </tr>
+        </table>
       </div>
     </li>
   </ul>
