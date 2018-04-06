@@ -199,7 +199,7 @@ router.post("/edit",
 
 router.get('/time_data', auth.hasCourseRole('ca').errorJson, function (req, res, next) {
   var current_course = req.query.course_id;
-
+  var b = 1;
   function getQuestionCount(time) {
     var day = time[0]
     var hour = time[1]
@@ -217,7 +217,6 @@ router.get('/time_data', auth.hasCourseRole('ca').errorJson, function (req, res,
   }
 
   var times_arr = [];
-
   for (var hour = 0; hour < 24; hour ++) {
     times_arr.push([]);
     for (var day = 0; day < 7; day ++) {
@@ -225,9 +224,10 @@ router.get('/time_data', auth.hasCourseRole('ca').errorJson, function (req, res,
     }
   }
 
-  return Promise.all(times_arr.map((r) => Promise.all
-    (r.map(getQuestionCount)))
-  )
+  Promise.all(times_arr.map((r) => Promise.all
+    (r.map(getQuestionCount)))).then(function(counts) {
+      return res.send(counts);
+    })
 });
 
 module.exports = router;

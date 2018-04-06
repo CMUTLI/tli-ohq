@@ -73,7 +73,6 @@ passport.use(
           }
         })
         .then(function(dbUser) {
-          console.log(dbUser);
           done(null, dbUser);
         })
         .catch(function(err) {
@@ -151,7 +150,7 @@ var hasCourseRole = function(role) {
     redirect: function(req, res, next) {
       var course_id = req.body.course_id != undefined ? req.body.course_id : req.query.course_id
       if (req.isAuthenticated() &&
-          req.user.roles[course_id] === role) {
+        req.user.roles[course_id] === role) {
         next();
       } else {
         res.redirect('/');
@@ -161,7 +160,7 @@ var hasCourseRole = function(role) {
     errorJson: function(req, res, next) {
       var course_id = req.body.course_id != undefined ? req.body.course_id : req.query.course_id
       if (req.isAuthenticated() &&
-          req.user.roles[course_id] === role) {
+        req.user.roles[course_id] === role) {
         next();
       } else {
         res.status(401).send({ name: 'AuthorizationError',

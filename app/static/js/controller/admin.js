@@ -123,21 +123,24 @@ var admin_ctl = ["$scope","$rootScope","$db","$http",function($scope,$rootScope,
 				if(L[row][col] > max_found) max_found = L[row][col];
 			}
 		}
+		//TODO: Think about notice for low counts
+		if(max_found < 5) {
+			Materialize.toast('Note: low user counts!', 5000);
+		}
 		return (max_found / 4) >> 0; // make bucket size an int in the worst way possible
 	}
 
-	$scope.colorize = function(raw) {
+	$scope.colorize = function(L) {
 		// adds color to each element based on #
 		// requires rectangular 2d list of ints
 
-		// TODO: Variable bucket sizes?
 		var res = [];
-		for(var row = 0; row < raw.length; row++) {
+		for(var row = 0; row < L.length; row++) {
 			var temp = [];
-			for(var col = 0; col < raw[0].length; col++) {
-				if(raw[row][col] < $scope.bucket_size) temp.push("#FFFFFF");
-				else if(raw[row][col] < 2 * $scope.bucket_size) temp.push("#F8AAAA");
-				else if(raw[row][col] < 3 * $scope.bucket_size) temp.push("#F15555");
+			for(var col = 0; col < L[0].length; col++) {
+				if(L[row][col] < $scope.bucket_size) temp.push("#FFFFFF");
+				else if(L[row][col] < 2 * $scope.bucket_size) temp.push("#F8AAAA");
+				else if(L[row][col] < 3 * $scope.bucket_size) temp.push("#F15555");
 				else temp.push("#EB0000");
 			}
 			res.push(temp)
@@ -145,35 +148,26 @@ var admin_ctl = ["$scope","$rootScope","$db","$http",function($scope,$rootScope,
 		return res;
 	} 
 
+	$scope.add_times = function(L) {
+		for(var row = 0; row < L.length; row++) {
+			L[row].unshift(row+1);
+		}
+	}
 
 	$scope.get_weekly_heatmap = function() {
-		// TODO: Replace with api call
-		var raw = [[0, 5, 1, 3, 4, 5, 0], 
-				  [3, 4, 0, 3, 3, 5, 5], 
-				  [1, 5, 1, 0, 3, 2, 4], 
-				  [2, 1, 2, 1, 0, 0, 1], 
-				  [0, 2, 5, 5, 2, 4, 0], 
-				  [1, 4, 3, 4, 3, 0, 1], 
-				  [2, 0, 1, 4, 1, 0, 1], 
-				  [5, 0, 2, 4, 5, 3, 0], 
-				  [5, 1, 2, 3, 5, 1, 0], 
-				  [2, 2, 0, 2, 1, 2, 2], 
-				  [3, 1, 3, 0, 2, 4, 0], 
-				  [5, 0, 0, 2, 5, 5, 3], 
-				  [3, 4, 3, 5, 3, 4, 2], 
-				  [3, 4, 0, 1, 5, 0, 1], 
-				  [0, 4, 4, 5, 1, 0, 5], 
-				  [0, 0, 0, 1, 1, 4, 5], 
-				  [2, 0, 3, 2, 3, 1, 0], 
-				  [0, 3, 3, 2, 0, 3, 3], 
-				  [3, 3, 3, 4, 0, 2, 0], 
-				  [5, 2, 3, 0, 4, 4, 4], 
-				  [3, 5, 3, 5, 1, 1, 0], 
-				  [0, 3, 5, 1, 1, 2, 2], 
-				  [4, 5, 1, 3, 1, 2, 1], 
-				  [0, 1, 2, 0, 5, 5, 0]];
-		$scope.bucket_size = $scope.find_bucket_size(raw);
-		$scope.heatmap = $scope.colorize(raw);
+		var payload = {
+			params: {course_id: parseInt(sessionStorage.getItem('current_course'))}
+		}
+
+		$http.get("/api/course/time_data", payload).then(function(success) {
+			$scope.bucket_size = $scope.find_bucket_size(success.data);
+			$scope.heatmap = $scope.colorize(success.data);
+			$scope.add_times($scope.heatmap);
+
+	    }, function(fail) {
+	      	Materialize.toast('Unable to get counts', 5000);
+	    });
 	}
 	$scope.get_weekly_heatmap();
+	$scope.isNumber = angular.isNumber;
 }];

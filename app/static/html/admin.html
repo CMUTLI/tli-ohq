@@ -96,16 +96,18 @@
       <div class="collapsible-body">
         <table>
           <tr>
-            <th>Mon</th>
-            <th>Tue</th>
-            <th>Wed</th>
-            <th>Thur</th>
-            <th>Fri</th>
-            <th>Sat</th>
-            <th>Sun</th>
+            <th style="text-align: center;" width="12.5%">Time</th>
+            <th style="text-align: center;" width="12.5%">Mon</th>
+            <th style="text-align: center;" width="12.5%">Tue</th>
+            <th style="text-align: center;" width="12.5%">Wed</th>
+            <th style="text-align: center;" width="12.5%">Thur</th>
+            <th style="text-align: center;" width="12.5%">Fri</th>
+            <th style="text-align: center;" width="12.5%">Sat</th>
+            <th style="text-align: center;" width="12.5%">Today</th>
           </tr>
           <tr ng-repeat="hour in heatmap track by $index">
-            <td ng-repeat="day in hour track by $index" ng-style="{'background-color': hour[$index]}">
+            <td ng-repeat="day in hour track by $index" ng-style="{'background-color': hour[$index]}" style="text-align: center;">
+              <div ng-if="isNumber(hour[$index])">{{ hour[$index] }}:00</div>
             </td>
           </tr>
       </div>
