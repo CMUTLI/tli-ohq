@@ -97,13 +97,14 @@
         <table>
           <tr>
             <th style="text-align: center;" width="12.5%">Time</th>
+            <th style="text-align: center;" width="12.5%">Sun</th>
             <th style="text-align: center;" width="12.5%">Mon</th>
             <th style="text-align: center;" width="12.5%">Tue</th>
             <th style="text-align: center;" width="12.5%">Wed</th>
             <th style="text-align: center;" width="12.5%">Thur</th>
             <th style="text-align: center;" width="12.5%">Fri</th>
             <th style="text-align: center;" width="12.5%">Sat</th>
-            <th style="text-align: center;" width="12.5%">Today</th>
+            
           </tr>
           <tr ng-repeat="hour in heatmap track by $index">
             <td ng-repeat="day in hour track by $index" ng-style="{'background-color': hour[$index]}" style="text-align: center;">
