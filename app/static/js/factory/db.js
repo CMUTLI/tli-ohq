@@ -78,6 +78,9 @@ var db = ["$rootScope","$http","$route","localStorageService",function ($rootSco
 			"reconnection":true,
 			"reconnectionDelay":200,
 			"reconnectionDelayMax": 200,
+			"path": '/socket.io',
+			"transports": ['polling'],
+			"secure": true,
 		};
 		d.qsio = io('/queue',sio_opts);
 		d.usio = io('/user',sio_opts);
