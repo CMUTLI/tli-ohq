@@ -25,6 +25,7 @@ var db = ["$rootScope","$http","$route","localStorageService",function ($rootSco
 		$rootScope.current_course = undefined;
 		$rootScope.current_course_number = undefined;
 
+		console_debug("DISCONNECTING FROM SIO");
 
 		if (d.qsio != undefined) {d.qsio.disconnect();}
 		if (d.usio != undefined) {d.usio.disconnect();}
@@ -161,8 +162,10 @@ var db = ["$rootScope","$http","$route","localStorageService",function ($rootSco
   setEmptyModel();
 
 	var handle_db_update = function(db_name,event) {
+		console_debug("DB updated");
 		var event_type = event["type"];
 		var payload = event["payload"];
+		console_debug(event_type,payload,db_name)
 		switch (event_type) {
 			case "data":
 				for (var i = 0; i < payload.length; i++) {
@@ -191,40 +194,52 @@ var db = ["$rootScope","$http","$route","localStorageService",function ($rootSco
 
 	/* Events to send */
 	d.add_question = function(payload) {
+		console_debug(payload)
 		d.qsio.emit("new_question",payload)
 	}
 	d.delete_question = function() {
+		console_debug("delete")
 		d.qsio.emit("delete_question", {})
 	}
 	d.freeze_question = function() {
+		console_debug("db freeze")
 		d.qsio.emit("freeze_question", {})
 	}
 	d.unfreeze_question = function() {
+		console_debug("db un freeze")
 		d.qsio.emit("unfreeze_question", {})
 	}
 	d.update_question = function(payload) {
+		console_debug(payload)
 		d.qsio.emit("update_question",payload)
 	}
 	d.close_queue = function() {
+		console_debug("close_queue")
 		d.qsio.emit('close_queue')
 	}
 	d.open_queue = function() {
+		console_debug("open_queue")
 		d.qsio.emit("open_queue")
 	}
 	d.update_minute_rule = function(new_rule) {
+		console_debug("update min")
 		//Assumes server side validation, send "message" event if invalid
 		d.qsio.emit("update_minute_rule",new_rule);
 	}
 	d.kick_question = function() {
+		console_debug("db kick")
 		d.qsio.emit("kick_question",{});
 	}
 	d.finish_question = function() {
+		console_debug("db finish")
 		d.qsio.emit("finish_question",{});
 	}
 	d.return_question = function () {
+		console_debug("db return")
 		d.qsio.emit("return_question",{});
 	}
 	d.answer_question = function () {
+		console_debug("Answer!")
 		d.qsio.emit("answer_question",{})
 	}
 	d.add_n_history = function(n) {

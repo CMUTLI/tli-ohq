@@ -6,3 +6,7 @@ function get_index_by_id(elements, id) {
 	}
 	return -1
 }
+
+function console_debug() {
+	if (window.queue_debug !== undefined) console.log.apply(this, arguments);
+}
