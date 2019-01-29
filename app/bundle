@@ -1,2 +1,2 @@
 rm ../bundle.zip
-zip ../bundle.zip -r * .[^.]*
+zip ../bundle.zip -x '*.git*' -x '*.DS_Store*' -x '*node_modules*' -r * .[^.]*
