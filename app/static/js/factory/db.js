@@ -72,12 +72,11 @@ var db = ["$rootScope","$http","$route","localStorageService",function ($rootSco
 	/* Connect to socketio when the user exists */
 	/* Initialize SocketIO */
 	$rootScope.$on("course_ready", function (course_id) {
-		console.log("CONNECTING TO SIO")
-
 		var sio_opts = {
 			"reconnection":true,
 			"reconnectionDelay":200,
 			"reconnectionDelayMax": 200,
+			"reconnectionAttempts": 5,
 			"path": '/socket.io',
 			"transports": ['polling'],
 			"secure": true,
@@ -85,7 +84,7 @@ var db = ["$rootScope","$http","$route","localStorageService",function ($rootSco
 		d.qsio = io('/queue',sio_opts);
 		d.usio = io('/user',sio_opts);
 		d.hsio = io('/history',sio_opts);
-    d.wsio = io('/waittime',sio_opts);
+    	d.wsio = io('/waittime',sio_opts);
 		d.n_history = 5;
 		d.io_connected = false
 		d.qsio.on("questions",function (payload) {
@@ -108,12 +107,12 @@ var db = ["$rootScope","$http","$route","localStorageService",function ($rootSco
 		d.usio.on("name_change", function (payload) { $rootScope.user.first_name = payload.payload[0].first_name;});
 		d.usio.on("cas_active", function (payload) { handle_db_update("cas_active",payload); });
 		d.hsio.on("questions", function(payload) { handle_db_update("closed_questions", payload); });
-    d.wsio.on("wait_time", function(payload) { handle_db_update("wait_time", payload); });
+    	d.wsio.on("wait_time", function(payload) { handle_db_update("wait_time", payload); });
 		d.qsio.on("joined", function() {
-      $rootScope.$apply(function() {
-			  setEmptyModel();
-			  d.io_connected = true;
-      });
+			$rootScope.$apply(function() {
+					setEmptyModel();
+					d.io_connected = true;
+			});
 		});
 		d.qsio.on("disconnect", function () {
 			if (sessionStorage.getItem('current_course')) {
