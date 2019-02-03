@@ -51,7 +51,7 @@ var course_admin_ctl = ["$scope","$rootScope","$db","$http",function($scope,$roo
       color: $('#edit_course_color').val(),
       label: $('#edit_course_label').val()
     }
-    console.log(payload);
+
     $http.post("/api/course/edit", payload).then(function(success) {
       Materialize.toast('Saved', 5000);
 			$scope.get_courses();
@@ -61,24 +61,38 @@ var course_admin_ctl = ["$scope","$rootScope","$db","$http",function($scope,$roo
     });
   }
 
+  $scope.get_name = function (num, courses) {
+    var course = courses.find(c => c['number'] == num);
+    return course['name'];
+  }
+
+  $scope.add_no_questions = function (data) {
+    var q_courses = data.map(c => c['number']);
+    var all_courses = $scope.courses.map(c => c['number']);
+    var no_q_courses = all_courses.filter(c => !q_courses.includes(c));
+    var add_zeroes = no_q_courses.map(c => ({number: c,
+                                            name: $scope.get_name(c, $scope.courses),
+                                            count: 0}));
+    return data.concat(add_zeroes);
+  }
+
+  $scope.get_counts = function () {
+    $http.get("/api/course/get_counts").then(function (success) {
+      $scope.course_stats = $scope.add_no_questions(success.data);
+    }, function (fail) {
+      Materialize.toast('Stats fukt', 5000);
+    })
+  }
+
   $scope.get_courses = function () {
     $http.get("/api/course/get_all").then(function(success) {
       $scope.courses = success.data;
+      $scope.get_counts();
     }, function(fail) {
       Materialize.toast('There was an error', 5000);
     });
   }
   $scope.get_courses();
-
-  $scope.get_counts = function () {
-    $http.get("/api/course/get_counts").then(function(success) {
-      $scope.course_stats = success.data;
-    }, function (fail) {
-      Materialize.toast('Stats fukt', 5000);
-    })
-  }
-  $scope.get_counts();
-
 
   $scope.select = function (del_item, del_id, del_active) {
     $scope.selected_del_course = del_item;
