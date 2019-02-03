@@ -70,6 +70,16 @@ var course_admin_ctl = ["$scope","$rootScope","$db","$http",function($scope,$roo
   }
   $scope.get_courses();
 
+  $scope.get_counts = function () {
+    $http.get("/api/course/get_counts").then(function(success) {
+      $scope.course_stats = success.data;
+    }, function (fail) {
+      Materialize.toast('Stats fukt', 5000);
+    })
+  }
+  $scope.get_counts();
+
+
   $scope.select = function (del_item, del_id, del_active) {
     $scope.selected_del_course = del_item;
     $scope.selected_del_id = del_id;
