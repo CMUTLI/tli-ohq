@@ -55,11 +55,23 @@ router.get('/get_tas', auth.hasCourseRole('ca').errorJson, function (req, res, n
             .andWhere('role', 'ca')
             .then(function (future_users) {
               return res.send(current_users.concat(future_users));
-            })
+            });
         });
-    })
+    });
+});
 
-})
+router.get('/get_counts', auth.isAdmin, function (req, res, next) {
+  return db.select("courses.number", "courses.name")
+    .countDistinct("questions.id")
+    .from("questions")
+    .join("courses", "courses.id", "questions.course_id")
+    .groupBy("courses.number", "courses.name")
+    .then(function (counts) {
+      return res.send(counts);
+    }).catch(function (error) {
+      res.status(400).send(error);
+    });
+});
 
 var ValidCourseSchema = {
   type: 'object',
