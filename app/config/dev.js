@@ -15,14 +15,15 @@ config.KNEX = {
 
 // Google Spreadsheet backup ID
 config.GOOGLE_SHEETS = {
-	"id": "15_vlyPc1LJ8J2i6a_zEK1D3cbjnIyxN9XcY14RcpclQ"
+  "id": "15_vlyPc1LJ8J2i6a_zEK1D3cbjnIyxN9XcY14RcpclQ"
 };
 
 // Superusers who can access super-secret stuff
 config.ADMIN_USERS = [
   'edryer@andrew.cmu.edu',
   'fmarsh@andrew.cmu.edu',
-  'aschick@andrew.cmu.edu'
+  'aschick@andrew.cmu.edu',
+  'kdchin@andrew.cmu.edu'
 ];
 
 module.exports = config;
