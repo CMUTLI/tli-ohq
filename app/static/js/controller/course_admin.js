@@ -131,6 +131,19 @@ var course_admin_ctl = ["$scope", "$rootScope", "$db", "$http", function ($scope
     });
   }
 
+  $scope.single_role = function () {
+    var payload = {
+      "andrew_ids": [$("#new_ca_andrew_id").val()],
+      "course_id": $scope.find_id(parseInt($("#single_course_num").val(), 10)),
+      "role": "ca"
+    }
+    $http.post("/api/role/set_admin", payload).then(function (success) {
+      Materialize.toast('TA Added', 5000);
+    }, function (fail) {
+      Materialize.toast('There was an error', 5000);
+    });
+  }
+
   $scope.batch_role = function () {
     var input, file, fr, result;
     input = document.getElementById('csv_input');

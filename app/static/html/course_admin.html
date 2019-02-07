@@ -25,6 +25,17 @@
           </div>
         </li>
 
+        <li>
+          <div class="collapsible-header"><b>Staff Assignment</b></div>
+          <div class="collapsible-body">
+            <ul class="collection">
+              <a ng-href="#modal_add_staff_single" modal>
+                <li class="collection-item"><i class="tiny material-icons">add</i> Add staff member</li>
+              </a>
+            </ul>
+          </div>
+        </li>
+
         <li id="batch_role_assignment">
           <div class="collapsible-header"><b>Batch TA Assignment</b></div>
           <div class="collapsible-body">
@@ -117,6 +128,22 @@
                 <a id="prefbtn" class="modal-action modal-close waves-effect waves-light btn-flat">Cancel</a>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add staff modal -->
+      <div class="modal modal-fullheight container" id="modal_add_staff_single">
+        <div class="modal-content">
+          <h5> Add Staff</h5>
+          <div class="divider"></div>
+          <div class="section" style="padding-bottom: 0">
+            <label for="single_course_num">Course Number</label>
+            <input id="single_course_num" type="text" style="margin-bottom: 0px">
+            <label for="new_ca_andrew_id">Staff Member's Google Apps enabled email</label>
+            <input id="new_ca_andrew_id" type="text">
+            <button id="new_ca_button" ng-click="single_role()" class="modal-action modal-close btn blue">Add
+              Staff</button>
           </div>
         </div>
       </div>
