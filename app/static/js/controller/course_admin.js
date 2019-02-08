@@ -1,7 +1,7 @@
-var course_admin_ctl = ["$scope","$rootScope","$db","$http",function($scope,$rootScope,$db,$http) {
-	$rootScope.$db = $db;
-	$rootScope.current_page = "course_admin";
-	$rootScope.check_login();
+var course_admin_ctl = ["$scope", "$rootScope", "$db", "$http", function ($scope, $rootScope, $db, $http) {
+  $rootScope.$db = $db;
+  $rootScope.current_page = "course_admin";
+  $rootScope.check_login();
 
   // model for editing user role
   $scope.edit_user = {
@@ -15,13 +15,13 @@ var course_admin_ctl = ["$scope","$rootScope","$db","$http",function($scope,$roo
 
   $scope.selected_edit = undefined;
 
-	$scope.find_id = function (course_num) {
-		for(var i = 0; i < $scope.courses.length; i++) {
+  $scope.find_id = function (course_num) {
+    for (var i = 0; i < $scope.courses.length; i++) {
       if ($scope.courses[i].number == course_num) {
         return $scope.courses[i].id;
       }
     }
-	}
+  }
 
   $scope.add_course = function () {
     var course_num = parseInt($("#new_course_num").val(), 10)
@@ -30,11 +30,11 @@ var course_admin_ctl = ["$scope","$rootScope","$db","$http",function($scope,$roo
       name: $("#new_course_name").val()
     }
 
-    $http.post("/api/course/add", course_payload).then(function(success) {
-			$('#modal_add_course').closeModal();
-			Materialize.toast('Saved', 5000);
-			$scope.get_courses();
-    }, function(fail) {
+    $http.post("/api/course/add", course_payload).then(function (success) {
+      $('#modal_add_course').closeModal();
+      Materialize.toast('Saved', 5000);
+      $scope.get_courses();
+    }, function (fail) {
       Materialize.toast('There was an error', 5000);
     });
   }
@@ -52,11 +52,11 @@ var course_admin_ctl = ["$scope","$rootScope","$db","$http",function($scope,$roo
       label: $('#edit_course_label').val()
     }
 
-    $http.post("/api/course/edit", payload).then(function(success) {
+    $http.post("/api/course/edit", payload).then(function (success) {
       Materialize.toast('Saved', 5000);
-			$scope.get_courses();
+      $scope.get_courses();
       $('#modaledit').closeModal();
-    }, function(fail) {
+    }, function (fail) {
       Materialize.toast('There was an error', 5000);
     });
   }
@@ -70,9 +70,11 @@ var course_admin_ctl = ["$scope","$rootScope","$db","$http",function($scope,$roo
     var q_courses = data.map(c => c['number']);
     var all_courses = $scope.courses.map(c => c['number']);
     var no_q_courses = all_courses.filter(c => !q_courses.includes(c));
-    var add_zeroes = no_q_courses.map(c => ({number: c,
-                                            name: $scope.get_name(c, $scope.courses),
-                                            count: 0}));
+    var add_zeroes = no_q_courses.map(c => ({
+      number: c,
+      name: $scope.get_name(c, $scope.courses),
+      count: 0
+    }));
     return data.concat(add_zeroes);
   }
 
@@ -85,10 +87,10 @@ var course_admin_ctl = ["$scope","$rootScope","$db","$http",function($scope,$roo
   }
 
   $scope.get_courses = function () {
-    $http.get("/api/course/get_all").then(function(success) {
+    $http.get("/api/course/get_all").then(function (success) {
       $scope.courses = success.data;
       $scope.get_counts();
-    }, function(fail) {
+    }, function (fail) {
       Materialize.toast('There was an error', 5000);
     });
   }
@@ -106,27 +108,40 @@ var course_admin_ctl = ["$scope","$rootScope","$db","$http",function($scope,$roo
       active: !($scope.selected_del_active)
     }
 
-    $http.post("/api/course/edit", payload).then(function(success) {
+    $http.post("/api/course/edit", payload).then(function (success) {
       Materialize.toast('Saved', 5000);
-			$scope.get_courses();
+      $scope.get_courses();
       $('#modal_edit_course').closeModal();
-    }, function(fail) {
+    }, function (fail) {
       Materialize.toast('There was an error', 5000);
     });
   }
 
-  $scope.submit_roles = function(people) {
-			people = people.filter((person) => person != "");
-      var payload = {
-				"andrew_ids": people,
-				"course_id": $scope.find_id(parseInt($("#batch_course_num").val(), 10)),
-				"role": "ca"
-      }
-			$http.post("/api/role/set_admin", payload).then(function(success) {
-				Materialize.toast('TAs Added', 5000);
-			}, function(fail) {
-				Materialize.toast('There was an error', 5000);
-			});
+  $scope.submit_roles = function (people) {
+    people = people.filter((person) => person != "");
+    var payload = {
+      "andrew_ids": people,
+      "course_id": $scope.find_id(parseInt($("#batch_course_num").val(), 10)),
+      "role": "ca"
+    }
+    $http.post("/api/role/set_admin", payload).then(function (success) {
+      Materialize.toast('TAs Added', 5000);
+    }, function (fail) {
+      Materialize.toast('There was an error', 5000);
+    });
+  }
+
+  $scope.single_role = function () {
+    var payload = {
+      "andrew_ids": [$("#new_ca_andrew_id").val()],
+      "course_id": $scope.find_id(parseInt($("#single_course_num").val(), 10)),
+      "role": "ca"
+    }
+    $http.post("/api/role/set_admin", payload).then(function (success) {
+      Materialize.toast('TA Added', 5000);
+    }, function (fail) {
+      Materialize.toast('There was an error', 5000);
+    });
   }
 
   $scope.batch_role = function () {
@@ -134,7 +149,7 @@ var course_admin_ctl = ["$scope","$rootScope","$db","$http",function($scope,$roo
     input = document.getElementById('csv_input');
     file = input.files[0]
     fr = new FileReader();
-    fr.onload = function(e) {
+    fr.onload = function (e) {
       $scope.submit_roles(e.target.result.split("\n"));
     }
     fr.readAsText(file);
