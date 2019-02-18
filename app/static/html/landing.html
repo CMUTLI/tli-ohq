@@ -19,7 +19,7 @@
         </div>
       </div>
 
-      <h5 ng-if="pinned_courses.length != all_courses.length" class="center">All Courses</h5>
+      <h5 ng-if="all_courses.length != 0" class="center">All Courses</h5>
       <div class="row">
         <div class="col s12 m10 offset-m1" ng-repeat="c in all_courses">
           <div ng-if="c.active" class="card">
@@ -34,6 +34,9 @@
             </div>
           </div>
         </div>
+        <p ng-if="all_courses.length + pinned_courses.length === 0" class="center">No courses registered to the queue.
+          Please <a href="mailto:fmarsh@andrew.cmu.edu,aschick@andrew.cmu.edu?subject=Queue Issue">contact a site admin
+          </a>to add courses.</p>
       </div>
 
     </div>
