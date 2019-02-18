@@ -184,8 +184,19 @@
         </div>
       </div>
 
-
-	</div>
-  </div>
-
+      <!-- Server Busy: Reload modal -->
+      <div class="modal modal-fullheight container" id="modal_overload">
+        <div class="modal-content">
+          <h5>Server Busy</h5>
+          <div class="divider"></div>
+          <div class="section">
+            The server is busy at the moment. Please try reloading the page in a couple minutes. Sorry for the
+            inconvenince!
+          </div>
+          <button ng-click="reload_page()" class="modal-action waves-effect waves-light btn blue"><i class="material-icons">autorenew</i></button>
+        </div>
+        <div class="divider"></div>
+      </div><!-- End of reload modal -->
+    </div><!-- Content container end -->
+  </div><!-- Content end -->
 </div>

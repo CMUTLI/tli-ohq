@@ -5,6 +5,21 @@ var student_ctl = ["$scope", "$rootScope", "$db", "localStorageService", functio
   $scope.name = "student";
   $rootScope.check_login();
 
+  // workaround to install watch on $db.io_connection variable
+  $scope.$db = $db;
+  $scope.io_connected = $db.io_connected;
+
+  $scope.$watch('$db.io_connected', function (io_is_connected, prev_connected) {
+    // don't want to open modal on inital page load
+    if ((typeof io_is_connected != "undefined") && (typeof prev_connected != "undefined")) {
+      if (io_is_connected) {
+        $('#modal_overload').closeModal();
+      } else {
+        $('#modal_overload').openModal();
+      }
+    }
+  });
+
   var example_questions = [
     'Help me go over the code tracing from quiz 1.',
     'What does \'type affects semantics\' mean?',
@@ -275,4 +290,7 @@ var student_ctl = ["$scope", "$rootScope", "$db", "localStorageService", functio
     }
   };
 
+  $scope.reload_page = function () {
+    location.reload();
+  }
 }];
