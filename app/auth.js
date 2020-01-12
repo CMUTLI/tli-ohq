@@ -108,6 +108,7 @@ function transfer_future_roles(insertedUser) {
 function getUserInfo(googleProfile) {
   var result = {};
 
+  result.email = googleProfile.emails[0].value;
   for (var i = 0; i < googleProfile.emails.length; i++) {
     if (googleProfile.emails[i].type === 'account') {
       result.email = googleProfile.emails[i].value;
