@@ -116,7 +116,7 @@ function getUserInfo(googleProfile) {
   }
 
   result.andrew_id = result.email;
-  result.last_name = googleProfile.name.familyName;
+  result.last_name = googleProfile.name.familyName || "";
   result.first_name = googleProfile.name.givenName;
   //TODO: remove this when roles are really gone
   result.role = "student";
