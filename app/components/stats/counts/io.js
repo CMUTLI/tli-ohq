@@ -2,6 +2,7 @@ var auth = require('../../../auth');
 var counts = require('./counts').counts;
 
 module.exports = function(io) {
+  io.use(auth.ioIsAuthenticated);
   // on client connection, join appropriate room, and
   // handle subsequent client -> server communications
   // cas join room cas_USERID
@@ -39,8 +40,12 @@ module.exports = function(io) {
     });
 
     counts.getUniqueStudentCountCa(userid, course_id).then(function(user) {
-      user.unique_student_count = parseInt(user.unique_student_count);
-      socket.emit('unique_student_count', user);
+      try {
+        user.unique_student_count = parseInt(user.unique_student_count);
+        socket.emit('unique_student_count', user);
+      } catch(err) {
+        socket.emit('unique_student_count', {'unique_student_count': 0});
+      }
     });
   };
 

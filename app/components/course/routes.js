@@ -2,8 +2,11 @@ var router = require('express').Router();
 var validate = require('express-jsonschema').validate;
 var auth = require('../../auth');
 var db = require('../../db');
+var logger = require('../logging/logger');
+
 
 router.get('/get_all', auth.isAuthenticated.errorJson, function(req, res, next) {
+  logger.info('Get all courses');
   return db.select('*')
   .from('courses')
   .orderBy('id')
@@ -20,6 +23,7 @@ router.get('/get_all', auth.isAuthenticated.errorJson, function(req, res, next) 
 });
 
 router.get('/get_active', auth.isAuthenticated.errorJson, function(req, res, next) {
+  logger.info('Get active courses');
   return db.select('*')
   .from('courses')
   .orderBy('id')
@@ -39,6 +43,7 @@ router.get('/get_active', auth.isAuthenticated.errorJson, function(req, res, nex
 });
 
 router.get('/get_tas', auth.hasCourseRole('ca').errorJson, function (req, res, next) {
+  logger.info('Get tas');
   return db.select('user')
     .from('roles')
     .where('course', req.query.course_id)
@@ -61,6 +66,7 @@ router.get('/get_tas', auth.hasCourseRole('ca').errorJson, function (req, res, n
 });
 
 router.get('/get_counts', auth.isAdmin, function (req, res, next) {
+  logger.info('Get counts');
   return db.select("courses.number", "courses.name")
     .countDistinct("questions.id")
     .from("questions")
@@ -130,7 +136,7 @@ router.post('/add',
             auth.isAdmin,
             validate({body: ValidCourseSchema}),
             function(req, res, next) {
-
+  logger.info('Add course');
   var body = req.body;
 
   // check if course number is valid
@@ -195,7 +201,7 @@ router.post("/edit",
             auth.isAdmin,
             validate({ body : CourseEditSchema }),
             function (req,res,next) {
-
+  logger.info('Edit course');
   var id = req.body.id;
   var body = req.body;
   delete body.id;

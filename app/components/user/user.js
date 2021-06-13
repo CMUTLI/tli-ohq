@@ -3,6 +3,8 @@ var dbEvents = require('../../db-events');
 var EventEmitter = require('events');
 var queueEvents = require('../queue/queue').questions.emitter;
 
+var logger = require('../logging/logger');
+
 function cleanUser(user) {
   user.auth_method = user.google_id === null ? 'local' : 'google';
   delete user.pw_bcrypt;
@@ -29,6 +31,7 @@ var users = (function() {
   };
 
   dbEvents.users.on("update", function (new_user,old_user) {
+      logger.info('user update');
       if (new_user.first_name !== old_user.first_name) {
         //name change
         result.emitter.emit('name_change', cleanUser(new_user));
@@ -42,6 +45,7 @@ var users = (function() {
   // the server will schedule a recount of online CAs
 
   var emitActive = function(course_id) {
+    logger.info('active cas');
     result.getActiveCas(course_id).then(function(cas) {
       result.emitter.emit('cas_active', cas, course_id);
     });
@@ -112,7 +116,7 @@ function selectUserId(userid) {
 //  - have answered a question in the past 5 minutes
 //  - have frozen a question in the past 5 minutes
 function selectActiveCas(course_id) {
-
+  logger.info('selectActiveCas');
   var active_timeout_sql = '(INTERVAL \'' + ACTIVE_TIMEOUT.toString() + ' seconds\')';
 
   return selectDefaultUserFields()

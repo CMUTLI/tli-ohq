@@ -3,6 +3,8 @@ var validate = require('express-jsonschema').validate;
 var auth = require('../../auth');
 var db = require('../../db');
 
+var logger = require('../logging/logger');
+
 var ValidAddInitialCASchema = {
   type: 'object',
   additionalProperties: false,
@@ -135,11 +137,17 @@ var ValidSetBatchRoleSchema = {
 
 router.post('/set', validate({body: ValidSetBatchRoleSchema}),
             auth.hasCourseRole("ca").errorJson,
-            function (req, res, next) {set_role(req, res, next)});
+            function (req, res, next) {
+              logger.info('set role');
+              set_role(req, res, next);
+            });
 
 router.post('/set_admin', validate({body: ValidSetBatchRoleSchema}),
             auth.isAdmin,
-            function (req, res, next) {set_role(req, res, next)});
+            function (req, res, next) {
+              logger.info('set admin');
+              set_role(req, res, next)
+            });
 
 var set_role = function(req, res, next) {
   var body = req.body
@@ -252,6 +260,7 @@ var set_role = function(req, res, next) {
 // });
 
 function andrews_to_ids(andrew_ids) {
+  logger.info('andrews to ids');
   return Promise.all(
     andrew_ids.map(e => db.select('id').from('users').where('andrew_id', e)
                           .first().then(

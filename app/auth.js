@@ -8,6 +8,7 @@ var db = require('./db');
 var config = require('./config');
 var cleanUser = require('./components/user/user').cleanUser;
 
+var logger = require('./components/logging/logger')
 
 passport.serializeUser(function(user, done) {
   done(null, user.id);
@@ -52,6 +53,7 @@ passport.use(
     config.GOOGLE_OAUTH2_CONFIG,
     function(accessToken, refreshToken, profile, done) {
 
+      logger.info('google strategy use');
       // see if user already exists
       db.select()
         .from('users')
@@ -106,6 +108,7 @@ function transfer_future_roles(insertedUser) {
 }
 
 function getUserInfo(googleProfile) {
+  logger.info('get user info');
   var result = {};
 
   result.email = googleProfile.emails[0].value;

@@ -7,6 +7,7 @@
 var app = require('../app').app;
 var debug = require('debug')('express:server');
 var server = require('../app').server;
+const stackimpact = require('stackimpact');
 
 /**
  * Get port from environment and store in Express.
@@ -83,3 +84,8 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+let agent = stackimpact.start({
+  agentKey: "f89873d0c9e4e8b14e55d2b084d1ff209f486958",
+  appName: "OHQ",
+});
