@@ -4,12 +4,12 @@ var config = {
 
 // Get/set these values from the Google APIs console
 config.CMU_SHIB_CONFIG = {
-  entityId: "https://ohq.eberly.cmu.edu/login/callback",
-  callbackUrl: "/api/login/callback",
-  domain: "ohq.eberly.cmu.edu"
+  entityId: "https://www.eberly.cmu.edu/shibboleth",
+  callbackURL: "https://www.eberly.cmu.edu/ohq/api/login/success",
+  domain: "www.eberly.cmu.edu"
 };
 //  callbackURL: "/success",
-//callbackUrl: "https://ohq.eberly.cmu.edu/api/login/success",
+
 
 // Get/set these values from the Google APIs console
 config.GOOGLE_OAUTH2_CONFIG = {
@@ -19,7 +19,7 @@ config.GOOGLE_OAUTH2_CONFIG = {
 };
 
 // Connection to database
-config.KNEX = require('../knexfile.js').production;
+config.KNEX = require('../knexfile.js').development;
 
 // Google Spreadsheet backup ID
 config.GOOGLE_SHEETS = {

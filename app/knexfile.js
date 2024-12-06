@@ -5,11 +5,9 @@ module.exports = {
   development: {
     client: 'postgresql',
     connection: {
-      host:     'localhost',
-      port:     '5432',
-      database: 'queue',
-      user:     'queue',
-      password: 'supersecret'
+      host: '/Users/tuckershea/Projects/eberly/tli-ohq/.postgresql/',
+      user: 'ohq',
+      database: 'ohq'
     },
     pool: {
       min: 1,
