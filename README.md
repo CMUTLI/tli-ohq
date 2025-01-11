@@ -32,20 +32,22 @@ psql queue
 
 ### Prod (please only do this if you know what you are doing)
 
-Make sure that the databases's security group allows for external TCP connections from your IP.
-```
-psql --host=aaxorijd436n8a.cxxtl6ujavn8.us-east-2.rds.amazonaws.com --user=queue --db=ebdb
-```
-Note: the host address (`aaxorijd436n8a.cxxtl6ujavn8.us-east-2.rds.amazonaws.com`) will change as RDS provisions new boxes for our DB, so just check RDS for the exact url if we ever upgrade/change instances.
+Use the Dockerfile in `./app/`.
+
+Set the environment variable `PORT=80`.
+
+Database: ensure a Postgres database is configured and the following environment variables are set:
+
+- RDS_HOSTNAME
+- RDS_PORT
+- RDS_DB_NAME
+- RDS_USERNAME
+- RDS_PASSWORD
+
+Mount `/run/secrets/` containing `sp-cert.pem` and `sp-key.pem` for shibboleth.
 
 ## Testing Procedures
 - Run stress test
 - Run unit tests on all browser types
 - Test on mobile using chrome dev tools
 
-## Database Environmental Variables
-- RDS_HOSTNAME
-- RDS_PORT
-- RDS_DB_NAME
-- RDS_USERNAME
-- RDS_PASSWORD

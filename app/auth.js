@@ -7,8 +7,8 @@ var cmushib = require('passport-cmushib')
 var trustedHeader = require('passport-trusted-header').Strategy
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 var fs = require('fs');                         //file system
-var publicCert = fs.readFileSync('./secure/sp-cert.pem', 'utf-8');
-var privateKey = fs.readFileSync('./secure/sp-key.pem', 'utf-8');
+var publicCert = fs.readFileSync('/run/secrets/sp-cert.pem', 'utf-8');
+var privateKey = fs.readFileSync('/run/secrets/sp-key.pem', 'utf-8');
 
 var db = require('./db');
 var config = require('./config');

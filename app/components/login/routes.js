@@ -10,7 +10,7 @@ var cmushib = require('passport-cmushib')
 //app.get(loginUrl, passport.authenticate(strategy.name), cmushib.backToUrl());
 //app.post(loginCallbackUrl, passport.authenticate(strategy.name), cmushib.backToUrl());
 //app.get(cmushib.urls.metadata, cmushib.metadataRoute(strategy, publicCert));
-var publicCert = fs.readFileSync('./secure/sp-cert.pem', 'utf-8');
+var publicCert = fs.readFileSync('/run/secrets/sp-cert.pem', 'utf-8');
 
 //router.get('/Shibboleth.sso/Metadata', cmushib.metadataRoute(auth.passport.strategy, publicCert));
 router.get(cmushib.urls.metadata, cmushib.metadataRoute(auth.passport.cmushib, publicCert));
