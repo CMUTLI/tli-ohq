@@ -4,21 +4,26 @@
  * Module dependencies.
  */
 
+require('trace-unhandled/register');
+
 var app = require('../app').app;
 var debug = require('debug')('express:server');
 var server = require('../app').server;
-const stackimpact = require('stackimpact');
+//const stackimpact = require('stackimpact');
+const fs = require('fs');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '3001');
 app.set('port', port);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
+
+console.log(`START: 0.0.0.0:${port}`);
 
 server.listen(port);
 server.on('error', onError);
@@ -85,7 +90,8 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
-let agent = stackimpact.start({
+/*let agent = stackimpact.start({
   agentKey: "f89873d0c9e4e8b14e55d2b084d1ff209f486958",
   appName: "OHQ",
 });
+*/

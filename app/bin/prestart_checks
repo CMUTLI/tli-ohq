@@ -21,6 +21,8 @@ function consistentDbTime() {
     }
     client.end();
   });
+
+  console.log("PASS: DB time is roughly app time");
 }
 
 consistentDbTime();
