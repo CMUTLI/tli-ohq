@@ -56,7 +56,7 @@ app.config(function($routeProvider) {
         templateUrl : "html/account.html",
         controller: "account_ctl"
     });
-    $routeProvider.when("/google_deny", { templateUrl : "html/errors/google_deny.html" });
+    $routeProvider.when("/deny", { templateUrl : "html/errors/deny.html" });
     $routeProvider.when("/404", { templateUrl : "html/errors/404.html" });
     $routeProvider.when("/500", { templateUrl : "html/errors/500.html" });
 });

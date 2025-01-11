@@ -60,7 +60,7 @@ io.use(function(socket, next) {
 });
 
 // hook up routes
-app.use('/', express.static('./static'));
+app.use('/', express.static('./static/'));
 app.use('/api/login', require('./components/login').routes);
 app.use('/api/user', require('./components/user').routes );
 app.use('/api/stats/timespent', require('./components/stats/timespent').routes);
